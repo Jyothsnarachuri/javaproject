@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo '🔄 Checking out code from GitHub repository...'
-                git branch: 'main', url: 'https://github.com/Jyothsnarachuri/javaproject.git'
+                git branch: 'main', url: 'https://github.com/Jyothsnarachuri/javaproject'
             }
         }
 
