@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        // Optional: Define the target build output directory
+        BUILD_DIR = "${env.WORKSPACE}/target"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo '🔄 Checking out code from GitHub repository...'
+                git branch: 'main', url: 'https://github.com/Jyothsnarachuri/javaproject.git'
+            }
+        }
+
+        stage('Compile Java Code') {
+            steps {
+                echo '🔧 Compiling the Java project using Maven...'
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                echo "📦 Archiving JAR files from target/ directory..."
+                archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: false
+            }
+        }
+
+        stage('Display Workspace Contents') {
+            steps {
+                echo "📁 Listing contents of workspace target directory:"
+                sh 'ls -lh ${WORKSPACE}/target'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Build and archiving successful!'
+        }
+        failure {
+            echo '❌ Build failed. Please check console output for errors.'
+        }
+    }
+}
